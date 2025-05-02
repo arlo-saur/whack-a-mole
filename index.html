@@ -8,9 +8,8 @@
     body {
       font-family: sans-serif;
       text-align: center;
-      margin: 0;
-      padding: 20px;
       background-color: #f0f0f0;
+      padding: 20px;
     }
     h1 {
       margin-bottom: 10px;
@@ -20,7 +19,7 @@
       grid-template-columns: repeat(3, 100px);
       gap: 10px;
       justify-content: center;
-      margin-top: 20px;
+      margin: 20px auto;
     }
     .square {
       width: 100px;
@@ -33,23 +32,43 @@
     .mole {
       background-color: brown;
     }
-    #score {
+    #score, #strikes {
       font-weight: bold;
+    }
+    #message {
+      margin-top: 10px;
+      font-size: 1.2em;
+      color: red;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <h1>Whack-a-Mole!</h1>
-  <p>Score: <span id="score">0</span></p>
+  <p>Score: <span id="score">0</span> | Strikes: <span id="strikes">0</span></p>
   <div class="grid" id="grid"></div>
+  <button id="startBtn">Start Game</button>
+  <p id="message"></p>
 
   <script>
     const grid = document.getElementById('grid');
     const scoreDisplay = document.getElementById('score');
-    let score = 0;
-    let currentMole;
+    const strikesDisplay = document.getElementById('strikes');
+    const startBtn = document.getElementById('startBtn');
+    const message = document.getElementById('message');
 
-    // Create 9 squares
+    let score = 0;
+    let strikes = 0;
+    let moleIndex = null;
+    let gameInterval = null;
+    const maxStrikes = 3;
+
+    // Create the squares
     for (let i = 0; i < 9; i++) {
       const square = document.createElement('div');
       square.classList.add('square');
@@ -58,25 +77,53 @@
     }
 
     const squares = document.querySelectorAll('.square');
-
-    function randomMole() {
+    // Resets the game back to a score of 0 and 0 strikes once you loose
+    function resetGame() {
+      score = 0;
+      strikes = 0;
+      moleIndex = null;
+      scoreDisplay.textContent = score;
+      strikesDisplay.textContent = strikes;
+      message.textContent = '';
       squares.forEach(sq => sq.classList.remove('mole'));
-      const idx = Math.floor(Math.random() * 9);
-      squares[idx].classList.add('mole');
-      currentMole = idx;
+    }
+    // Game ends when you don't click the moles fast enough
+    function endGame() {
+      clearInterval(gameInterval);
+      moleIndex = null;
+      message.textContent = 'Game Over! Click "Start Game" to try again.';
+      squares.forEach(sq => sq.classList.remove('mole'));
     }
 
-    squares.forEach(sq => {
-      sq.addEventListener('click', () => {
-        if (parseInt(sq.dataset.id) === currentMole) {
+    function startGame() {
+      resetGame();
+
+      gameInterval = setInterval(() => {
+        squares.forEach(sq => sq.classList.remove('mole'));
+        moleIndex = Math.floor(Math.random() * 9);
+        squares[moleIndex].classList.add('mole');
+      }, 800);
+    }
+    // Strike system -> 3 strikes and you're out
+    squares.forEach(square => {
+      square.addEventListener('click', () => {
+        const clickedIndex = parseInt(square.dataset.id);
+        if (clickedIndex === moleIndex) {
           score++;
           scoreDisplay.textContent = score;
-          currentMole = null;
+          moleIndex = null;
+          square.classList.remove('mole');
+        } else if (moleIndex !== null) {
+          strikes++;
+          strikesDisplay.textContent = strikes;
+          if (strikes >= maxStrikes) {
+            endGame();
+          }
         }
       });
     });
 
-    setInterval(randomMole, 800); // Mole pops up every 0.8s
+    startBtn.addEventListener('click', startGame);
   </script>
 </body>
 </html>
