@@ -88,17 +88,19 @@
       message.textContent = '';
       squares.forEach(sq => sq.classList.remove('mole'));
     }
-    // Game ends when you don't click the moles fast enough
+    // Game ends when you misclick a spot 3 times as a mole
     function endGame() {
       clearInterval(gameInterval);
       moleIndex = null;
       message.textContent = 'Game Over! Click "Start Game" to try again.';
       squares.forEach(sq => sq.classList.remove('mole'));
+      startBtn.style.display = 'inline'; // Shows the start game button when the game ends
     }
 
     function startGame() {
       resetGame();
-
+      startBtn.style.display = 'none'; // Hides the start game button when the game starts
+      
       gameInterval = setInterval(() => {
         squares.forEach(sq => sq.classList.remove('mole'));
         moleIndex = Math.floor(Math.random() * 9);
