@@ -24,13 +24,17 @@
     .square {
       width: 100px;
       height: 100px;
+      font-size: 60px;
+      line-height: 100px;
+      text-align: center;
       background-color: #ddd;
       border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.2s ease;
+      user-select: none;
     }
     .mole {
-      background-color: brown;
+      background-color: #fff;
     }
     #score, #strikes {
       font-weight: bold;
@@ -113,9 +117,12 @@
       startBtn.style.display = 'none'; // Hides the start game button when the game starts
       
       gameInterval = setInterval(() => {
-        squares.forEach(sq => sq.classList.remove('mole'));
+        squares.forEach(sq => {
+          sq.classList.remove('mole'));
+          sq.textContent = ' '; // Removes the mole emoji
         moleIndex = Math.floor(Math.random() * 9);
         squares[moleIndex].classList.add('mole');
+        squares[moleIndex].textContent = '🐹'; // Shows the mole emoji
       }, 800);
     }
     // Strike system -> 3 strikes and you're out
@@ -127,6 +134,7 @@
           scoreDisplay.textContent = score;
           moleIndex = null;
           square.classList.remove('mole');
+          square.textContent = ''; // This clears the mole emoji
         } else if (moleIndex !== null) {
           strikes++;
           strikesDisplay.textContent = strikes;
