@@ -121,7 +121,8 @@
       startBtn.style.display = 'none'; // Hides the start game button when the game starts
       
       gameInterval = setInterval(() => {
-        squares.forEach(sq => {sq.classList.remove('mole'));
+        squares.forEach(sq => {
+          sq.classList.remove('mole');
           sq.textContent = ' '; // Removes the mole emoji
         moleIndex = Math.floor(Math.random() * 9);
         squares[moleIndex].classList.add('mole');
