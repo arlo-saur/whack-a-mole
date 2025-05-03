@@ -39,6 +39,10 @@
     }
     .mole {
       background-color: #fff;
+      border: 3px solid #444; /* Adds a darker outline around the mole */
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      font-size: 70px; /* Makes the mole emoji slightly bigger */
     }
     #score, #strikes {
       font-weight: bold;
@@ -107,7 +111,7 @@
       message.textContent = '';
       squares.forEach(sq => sq.classList.remove('mole'));
     }
-    // Game ends when you misclick a spot 3 times as a mole
+    // Game ends when you misclick a spot 3 times
     function endGame() {
       clearInterval(gameInterval);
       moleIndex = null;
