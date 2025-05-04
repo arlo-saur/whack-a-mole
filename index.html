@@ -47,6 +47,26 @@
     .square.mole:hover {
       background-color: #a68e6f;
     }
+    body.dark {
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+    }
+    body.dark .game-container {
+      background-color: #2c2c2c;
+      border-color: #555;
+    }
+    body.dark .square {
+      background-color: #444;
+      border-color: #666;
+    }
+    body.dark .square.mole {
+      background-color: #5c4a3f;
+    }
+    body.dark button {
+      background-color: #333;
+      color: #eee;
+      border: 1px solid #777;
+    }
     #score, #strikes {
       font-weight: bold;
     }
@@ -73,6 +93,7 @@
   </style>
 </head>
 <body>
+  <button id="toggleDark">Toggle Dark Mode</button>
   <div class="game-container">
     <h1>Whack-a-Mole!</h1>
     <p>Whack the mole before it disappears. If you miss three times, the game is over!</p>
@@ -88,6 +109,10 @@
     const strikesDisplay = document.getElementById('strikes');
     const startBtn = document.getElementById('startBtn');
     const message = document.getElementById('message');
+    const toggleBtn = document.getElementById('toggleDark');
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
 
     let score = 0;
     let strikes = 0;
